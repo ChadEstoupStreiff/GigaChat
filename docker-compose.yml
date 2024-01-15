@@ -1,0 +1,76 @@
+version: '3'
+
+services:
+  gigachat_front:
+    image: httpd
+    container_name: gigachat_web
+    restart: always
+    ports:
+      - ${WEB_PORT}:80
+    networks:
+      - gigachat-network
+    volumes:
+      - ./back/src:/usr/local/apache2/htdocs
+
+  gigachat_backend:
+    env_file:
+      - .env
+    depends_on:
+      - gigachat_database
+    links:
+      - gigachat_database
+    build:
+      context: ./back
+    container_name: gigachat_private
+    restart: always
+    volumes:
+      - .env:/.env
+    ports:
+      - ${BACK_PORT}:80
+    networks:
+      - gigachat-network
+
+  gigachat_database:
+    env_file:
+      - .env
+    image: 'mariadb:latest'
+    container_name: gigachat_database
+    restart: always
+    environment:
+      - MYSQL_USER=${SQL_USER}
+      - MYSQL_PASSWORD=${SQL_PASSWORD}
+      - MYSQL_DATABASE=${SQL_DATABASE}
+      - MYSQL_ROOT_PASSWORD=${SQL_ROOTPASSWORD}
+    volumes:
+      - ${SQL_DATA_PATH}:/var/lib/mysql/
+      - ./back/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - gigachat-network
+    hostname: gigachat_database
+
+  gigachat_phpmyadmin:
+    env_file:
+      - .env
+    image: phpmyadmin/phpmyadmin
+    container_name: gigachat_phpmyadmin
+    restart: always
+    depends_on:
+      - gigachat_database
+    links:
+      - gigachat_database
+    environment:
+      PMA_HOST: gigachat_database
+      PMA_USER: root
+      PMA_PASSWORD: ${SQL_ROOTPASSWORD}
+      PMA_PORT: 3306
+      PMA_ARBITRARY: 1
+    networks:
+      - gigachat-network
+    ports:
+      - ${PMA_PORT}:80
+
+  
+networks:
+  gigachat-network:
+    name: gigachat-network
+    driver: bridge

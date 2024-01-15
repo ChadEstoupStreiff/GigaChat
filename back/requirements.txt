@@ -1,0 +1,9 @@
+python-dotenv==1.0.0
+fastapi
+uvicorn[standard]
+python-multipart
+pydantic
+pydantic[email]
+PyJWT==2.6.0
+mysql-connector-python==8.0.31
+bcrypt

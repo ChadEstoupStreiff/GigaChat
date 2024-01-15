@@ -1,1 +1,2 @@
-# GigaChat
+# GigaChat 💬
+
