@@ -77,25 +77,29 @@ async def endpoint_delete_user(token: str = Depends(JWTBearer())):
 
 @app.get("/chat/user/{target}", tags=["chat"])
 async def chat_user(target: str, token: str = Depends(JWTBearer())) -> None:
-    user = get_user_id(token)
-    return DMChatManager().get_chat(user, target)
+    if get_user_info(target) is not None:
+        user = get_user_id(token)
+        return DMChatManager().get_chat(user, target)
+    return None
 
 
 @app.post("/chat/user/{target}", tags=["chat"])
 async def chat_user_msg(
     target: str, message, token: str = Depends(JWTBearer())
 ) -> None:
-    user = get_user_id(token)
-    name = get_user_info(user)["name"]
-    return DMChatManager().register_message(user, target, name, message)
-
+    if get_user_info(target) is not None:
+        user = get_user_id(token)
+        name = get_user_info(user)["name"]
+        return DMChatManager().register_message(user, target, name, message)
+    return None
 
 @app.websocket("/chat/user/{target}")
 async def chat_user_ws(
     websocket: WebSocket, target: str, token: str = Depends(JWTBearer())
 ):
-    await DMChatManager().register_socket(websocket, get_user_id(token), target)
-
+    if get_user_info(target) is not None:
+        await DMChatManager().register_socket(websocket, get_user_id(token), target)
+    return None
 
 # @app.get("/chat/group/{group_id}", tags=["chat"])
 # async def chat_group(group_id: str, token: str = Depends(JWTBearer())) -> None:

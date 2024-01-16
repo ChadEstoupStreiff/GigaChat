@@ -3,6 +3,7 @@ from datetime import datetime
 from typing import Any, Dict, Union
 
 from db.users import get_user_info
+from db.chats import get_chat, get_messages, create_chat, create_message
 
 
 class DMChatManager:
@@ -15,43 +16,37 @@ class DMChatManager:
                 cls, *args, **kwargs
             )
 
-            DMChatManager.__instance.chats = []
             DMChatManager.__instance.sockets = {}
 
         return DMChatManager.__instance
 
-    def register_chat(self, user: str, target: str) -> Union[Dict[str, Any], None]:
-        if user != target:
-            chat = {
-                "users": [user, target],
-                "messages": [],
-            }
-            self.chats.append(chat)
-            return chat
-        return None
-
     def get_chat(self, user: str, target: str):
-        for chat in self.chats:
-            if user in chat["users"] and target in chat["users"]:
-                return chat
-        return self.register_chat(user, target)
+        chat = get_chat(user, target)
+        if chat is None:
+            create_chat(user, target)
+            chat = get_chat(user, target)
+        chat["messages"] = get_messages(chat["chat_id"])
+        if chat["messages"] is None:
+            chat["messages"] = []
+        return chat
 
     def register_message(self, user: str, target: str, name: str, message: str) -> bool:
         chat = self.get_chat(user, target)
         if chat is None:
             return False
+        date = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
-        message = {
-            "user": name,
-            "msg": message,
-            "date": datetime.now().strftime("%d/%m/%Y %H:%M:%S"),
-        }
-        chat["messages"].append(message)
+        create_message(chat["chat_id"], name, message, date)
 
-        message = json.dumps(message)
         try:
-            map(lambda s: s.send_text(message), self.get_sockets(target))
-            map(lambda s: s.send_text(message), self.get_sockets(user))
+            message = {
+                "user": name,
+                "msg": message,
+                "date": date,
+            }
+            message_json = json.dumps(message)
+            map(lambda s: s.send_text(message_json), self.get_sockets(target))
+            map(lambda s: s.send_text(message_json), self.get_sockets(user))
         except Exception as _:
             pass
         return message
