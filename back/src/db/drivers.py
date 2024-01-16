@@ -20,8 +20,8 @@ class DB:
                 try:
                     conn = mysql.connector.connect(
                         host="gigachat_database",
-                        user="root",
-                        passwd=config["SQL_ROOTPASSWORD"],
+                        user=config["SQL_USER"],
+                        passwd=config["SQL_PASSWORD"],
                         database=config["SQL_DATABASE"],
                     )
                     DB.__instance.conn = conn

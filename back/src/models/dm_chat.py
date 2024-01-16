@@ -1,10 +1,8 @@
 import json
 from datetime import datetime
 from typing import Any, Dict, Union
-from fastapi import WebSocketState
 
 from db.users import get_user_info
-import copy
 
 
 class DMChatManager:
