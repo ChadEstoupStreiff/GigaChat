@@ -1,5 +1,5 @@
 import time
-from typing import Union, Dict
+from typing import Dict, Union
 
 import jwt
 from dotenv import dotenv_values
@@ -21,7 +21,9 @@ def sign_jwt(user_id: str) -> str:
 def decode_jwt(token: str) -> Union[Dict[str, str], None]:
     try:
         config = dotenv_values("/.env")
-        decoded_token = jwt.decode(token, config["JWT_SECRET"], algorithms=[config["JWT_ALGORITHM"]])
+        decoded_token = jwt.decode(
+            token, config["JWT_SECRET"], algorithms=[config["JWT_ALGORITHM"]]
+        )
         if decoded_token["expires"] >= time.time():
             return decoded_token
         raise HTTPException(status_code=401, detail="Token expired")

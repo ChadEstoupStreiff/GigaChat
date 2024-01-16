@@ -1,8 +1,8 @@
 import logging
-from typing import Union, List, Any, Tuple
+import time
+from typing import Any, List, Tuple, Union
 
 import mysql.connector
-import time
 from dotenv import dotenv_values
 
 
@@ -12,17 +12,18 @@ class DB:
     @staticmethod
     def __new__(cls, *args, **kwargs):
         if DB.__instance is None:
-            DB.__instance = super(DB, cls).__new__(
-                cls, *args, **kwargs
-            )
+            DB.__instance = super(DB, cls).__new__(cls, *args, **kwargs)
 
             config = dotenv_values("/.env")
             DB.__instance.conn = None
             for _ in range(10):
                 try:
-                    conn = mysql.connector.connect(host="gigachat_database", user="root",
-                                                    passwd=config["SQL_ROOTPASSWORD"],
-                                                    database=config["SQL_DATABASE"])
+                    conn = mysql.connector.connect(
+                        host="gigachat_database",
+                        user="root",
+                        passwd=config["SQL_ROOTPASSWORD"],
+                        database=config["SQL_DATABASE"],
+                    )
                     DB.__instance.conn = conn
                     break
                 except Exception as e:
@@ -50,7 +51,9 @@ class DB:
         self.conn.commit()
         return affected > 0
 
-    def execute(self, query: str, values: Tuple = None, keys: Tuple = None) -> Union[List[List[Any]], None]:
+    def execute(
+        self, query: str, values: Tuple = None, keys: Tuple = None
+    ) -> Union[List[List[Any]], None]:
         if values is None:
             values = ()
         cursor = self._get_cursor()
@@ -69,7 +72,9 @@ class DB:
             cursor.close()
         return data
 
-    def execute_single(self, query: str, values: Tuple = None, keys: Tuple = None) -> Union[List[Any], None]:
+    def execute_single(
+        self, query: str, values: Tuple = None, keys: Tuple = None
+    ) -> Union[List[Any], None]:
         data = self.execute(query, values, keys)
         if len(data) > 0:
             return data[0]
