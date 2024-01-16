@@ -10,7 +10,7 @@ services:
     networks:
       - gigachat-network
     volumes:
-      - ./back/src:/usr/local/apache2/htdocs
+      - ./front/src:/usr/local/apache2/htdocs
 
   gigachat_backend:
     env_file:
@@ -21,7 +21,7 @@ services:
       - gigachat_database
     build:
       context: ./back
-    container_name: gigachat_private
+    container_name: gigachat_back
     restart: always
     volumes:
       - .env:/.env
@@ -36,6 +36,8 @@ services:
     image: 'mariadb:latest'
     container_name: gigachat_database
     restart: always
+    ports:
+      - 3306:3306
     environment:
       - MYSQL_USER=${SQL_USER}
       - MYSQL_PASSWORD=${SQL_PASSWORD}
