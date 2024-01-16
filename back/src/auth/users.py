@@ -29,8 +29,11 @@ def is_mail(mail: str) -> bool:
 def register_user(user_mail: str, user_password: str, user_name: str) -> str:
     user_password = encrypt(user_password)
     if is_mail(user_mail):
-        if create_user(user_mail, user_password, user_name):
-            return get_token(user_mail)
+        try:
+            if create_user(user_mail, user_password, user_name):
+                return get_token(user_mail)
+        except Exception as _:
+            raise HTTPException(400, detail=f"{user_mail} can't be registered. Can already be in use by another user.")
     else:
         raise HTTPException(400, detail=f"{user_mail} is not a mail")
 
