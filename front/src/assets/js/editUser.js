@@ -48,6 +48,7 @@ edit_user_form.addEventListener('submit', function (event) {
     const userData = {};
     if (formData.get('name') != get_name) {
         userData["user_name"] = formData.get('name');
+    }
     if (formData.get('password') != password) {
         userData["user_password"] = formData.get('password');
     }
