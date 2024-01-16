@@ -38,6 +38,7 @@ async def endpoint_user_login_info(
 async def endpoint_user_login(user_mail: str, user_password: str) -> Union[str, None]:
     Shield().shield_login(user_mail)
     if check_user(user_mail, user_password):
+        Shield().success_login(user_mail)
         return get_token(user_mail)
     raise HTTPException(403, "Invalid credentials")
 

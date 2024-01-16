@@ -23,4 +23,7 @@ class Shield:
                 time.sleep(3)
         else:
             self.user_login_cooldown[user] = Lock()
-        
+    
+    def success_login(self, user: str):
+        if user in self.user_login_cooldown.keys():
+            del self.user_login_cooldown[user]
