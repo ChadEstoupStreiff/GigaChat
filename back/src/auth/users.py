@@ -1,4 +1,3 @@
-import time
 from typing import Dict
 
 import bcrypt
@@ -39,6 +38,7 @@ def register_user(user_mail: str, user_password: str, user_name: str) -> str:
                 return get_token(user_mail)
         except Exception as e:
             import logging
+
             logging.critical(e)
             raise HTTPException(
                 400,
@@ -49,10 +49,9 @@ def register_user(user_mail: str, user_password: str, user_name: str) -> str:
 
 
 def check_user(user_mail: str, user_password: str) -> bool:
-    time.sleep(0.5)
     user_encrypted_password = get_user_password(user_mail)
     return user_encrypted_password is not None and bcrypt.checkpw(
-        user_password.encode(), bytes(user_encrypted_password)
+        user_password.encode(), bytes(user_encrypted_password.encode("ASCII", "utf8"))
     )
 
 

@@ -13,6 +13,7 @@ from db.users import delete_user, get_user_info, update_user
 from fastapi import Depends, FastAPI, HTTPException, WebSocket
 from fastapi.middleware.cors import CORSMiddleware
 from models.dm_chat import DMChatManager
+from security import Shield
 
 app = FastAPI()
 
@@ -35,6 +36,7 @@ async def endpoint_user_login_info(
 
 @app.post("/auth", tags=["auth"])
 async def endpoint_user_login(user_mail: str, user_password: str) -> Union[str, None]:
+    Shield().shield_login(user_mail)
     if check_user(user_mail, user_password):
         return get_token(user_mail)
     raise HTTPException(403, "Invalid credentials")
@@ -93,6 +95,7 @@ async def chat_user_msg(
         return DMChatManager().register_message(user, target, name, message)
     return None
 
+
 @app.websocket("/chat/user/{target}")
 async def chat_user_ws(
     websocket: WebSocket, target: str, token: str = Depends(JWTBearer())
@@ -100,6 +103,7 @@ async def chat_user_ws(
     if get_user_info(target) is not None:
         await DMChatManager().register_socket(websocket, get_user_id(token), target)
     return None
+
 
 # @app.get("/chat/group/{group_id}", tags=["chat"])
 # async def chat_group(group_id: str, token: str = Depends(JWTBearer())) -> None:

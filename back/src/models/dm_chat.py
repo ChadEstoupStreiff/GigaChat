@@ -1,9 +1,8 @@
 import json
 from datetime import datetime
-from typing import Any, Dict, Union
 
+from db.chats import create_chat, create_message, get_chat, get_messages
 from db.users import get_user_info
-from db.chats import get_chat, get_messages, create_chat, create_message
 
 
 class DMChatManager:

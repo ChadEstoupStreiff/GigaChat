@@ -1,4 +1,4 @@
-from typing import Dict, List, Union
+from typing import List, Union
 
 from db.drivers import DB
 from fastapi import HTTPException
