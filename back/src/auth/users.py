@@ -6,6 +6,7 @@ from fastapi import HTTPException
 
 from auth.auth_handler import decode_jwt, sign_jwt
 from db.users import get_user_password, create_user
+import time
 
 
 def encrypt(text: str) -> bytes:
@@ -35,9 +36,10 @@ def register_user(user_mail: str, user_password: str, user_name: str) -> str:
 
 
 def check_user(user_mail: str, user_password: str) -> bool:
+    time.sleep(0.5)
     user_encrypted_password = get_user_password(user_mail)
     return user_encrypted_password is not None and bcrypt.checkpw(user_password.encode(),
-                                                                  bytes(user_encrypted_password))
+                                                                  bytes(user_encrypted_password.encode('ASCII', "utf8")))
 
 
 def get_user_login_info(token: str) -> Dict[str, str]:

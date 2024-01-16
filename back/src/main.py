@@ -1,10 +1,10 @@
 from typing import Union, Dict, Any
 
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
 from auth.auth_bearer import JWTBearer
-from auth.users import register_user, check_user, get_token, get_user_id, get_user_login_info, encrypt, disconnect_user
+from auth.users import register_user, check_user, get_token, get_user_id, get_user_login_info, encrypt
 from db.users import get_user_info, delete_user, update_user
 
 app = FastAPI()
@@ -28,7 +28,7 @@ async def endpoint_user_login_info(token: str = Depends(JWTBearer())) -> Union[D
 async def endpoint_user_login(user_mail: str, user_password: str) -> Union[str, None]:
     if check_user(user_mail, user_password):
         return get_token(user_mail)
-    return None
+    raise HTTPException(403, "Invalid credentials")
 
 
 # user

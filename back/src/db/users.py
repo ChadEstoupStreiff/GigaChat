@@ -29,7 +29,7 @@ SET user_name=%s WHERE user_mail=%s""",
 
     if user_mail is not None:
         if not DB().commit("""UPDATE Users
-SET user_password=%s WHERE user_mail=%s""",
+SET user_mail=%s WHERE user_mail=%s""",
                            (user_mail, old_user_mail)):
             raise HTTPException(400, "Can't update user")
 

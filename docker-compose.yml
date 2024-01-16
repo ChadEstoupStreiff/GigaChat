@@ -36,8 +36,6 @@ services:
     image: 'mariadb:latest'
     container_name: gigachat_database
     restart: always
-    ports:
-      - 3306:3306
     environment:
       - MYSQL_USER=${SQL_USER}
       - MYSQL_PASSWORD=${SQL_PASSWORD}
