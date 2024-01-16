@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mon Profil</title>
+    <link rel="stylesheet" href="assets/css/navigation.css">
+    <link rel="stylesheet" href="assets/css/profile.css">
+</head>
+
+<body>
+    <header>
+        <nav>
+            <div class="left-buttons">
+                <a class="app-button" href="./index.html">Giga Chat</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <div class="profile-info">
+            <h1>Bienvenue, <span id="user-name"></span></h1>
+            <p>Adresse e-mail : <span id="user-email"></span></p>
+        </div>
+
+        <div class="profile-actions">
+            <button id="edit-profile-btn" class="edit-btn"><a href="./edit_user.html" class="app-link">Edit my
+                    profile</a></button>
+
+            <button id="logout-btn">Se déconnecter</button>
+        </div>
+    </main>
+
+    <script src="assets/js/auth.js"></script>
+    <script src="assets/js/profile.js"></script>
+</body>
+
+</html>
