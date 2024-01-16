@@ -37,7 +37,9 @@ def register_user(user_mail: str, user_password: str, user_name: str) -> str:
         try:
             if create_user(user_mail, user_password, user_name):
                 return get_token(user_mail)
-        except Exception as _:
+        except Exception as e:
+            import logging
+            logging.critical(e)
             raise HTTPException(
                 400,
                 detail=f"{user_mail} can't be registered. Can already be in use by another user.",
@@ -50,7 +52,7 @@ def check_user(user_mail: str, user_password: str) -> bool:
     time.sleep(0.5)
     user_encrypted_password = get_user_password(user_mail)
     return user_encrypted_password is not None and bcrypt.checkpw(
-        user_password.encode(), bytes(user_encrypted_password.encode("ASCII", "utf8"))
+        user_password.encode(), bytes(user_encrypted_password)
     )
 
 

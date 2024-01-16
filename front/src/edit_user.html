@@ -6,10 +6,10 @@
     <meta charset="utf-8">
     <title>Dress Forecast</title>
     <link rel="stylesheet" href="assets/css/navigation.css">
-    <link rel="stylesheet" href="assets/css/dressForcast.css">
+    <link rel="stylesheet" href="assets/css/addEditDressing.css">
 </head>
 
-<body id="background">
+<body>
     <header>
         <nav>
             <div class="left-buttons">
@@ -22,35 +22,22 @@
         </nav>
     </header>
     <div class="container">
-        <div class="date-row">
-            <div>
-                <h1 id="resultDate"></h1>
-            </div>
-        </div>
-        <div class="data-row">
-            <div>
-                <h2 id="temperature"></h2>
-            </div>
-            <div>
-                <h2 id="weatherConditions"></h2>
-            </div>
-            <div>
-                <h2 id="rainProb"></h2>
-            </div>
-        </div>
-        <div class="clothes-list">
-            <h2>Clothes recommanded</h2>
-            <ul>
-            </ul>
-        </div>
-    </div>
-    <div class="calendar">
-        <h2>Weather forecast calendar</h2>
-        <div class="buttons-container" id="weekList"></div>
+        <form id="edit_user_form">
+            <h2>Edit User Details</h2>
+
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="password">Password:</label>
+            <input type="text" id="password" name="password" required>
+
+            <button type="submit" id="saveButton">SAVE</button>
+        </form>
+        <button id="cancelButton">Cancel</button>
     </div>
 
     <script src="assets/js/auth.js"></script>
-    <script src="assets/js/dressForcast.js"></script>
+    <script src="assets/js/editUser.js"></script>
     <script>
         // Appelle la fonction de vérification lors du chargement de la page
         checkTokenAndRedirect();
