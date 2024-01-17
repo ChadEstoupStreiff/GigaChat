@@ -4,6 +4,7 @@ import bcrypt
 from auth.auth_handler import decode_jwt, sign_jwt
 from db.users import create_user, get_user_password
 from dotenv import dotenv_values
+import platform
 from fastapi import HTTPException
 
 
@@ -50,8 +51,11 @@ def register_user(user_mail: str, user_password: str, user_name: str) -> str:
 
 def check_user(user_mail: str, user_password: str) -> bool:
     user_encrypted_password = get_user_password(user_mail)
+    if platform.machine() in ['arm', 'arm64', 'aarch64']:  # Add other ARM-related identifiers if needed
+        # ARM architecture - encode
+        user_encrypted_password = user_encrypted_password.encode("ASCII", "utf8")
     return user_encrypted_password is not None and bcrypt.checkpw(
-        user_password.encode(), bytes(user_encrypted_password.encode("ASCII", "utf8"))
+        user_password.encode(), bytes(user_encrypted_password)
     )
 
 
