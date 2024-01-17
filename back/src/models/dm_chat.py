@@ -3,7 +3,6 @@ from datetime import datetime
 
 from db.chats import create_chat, create_message, get_chat, get_chats, get_messages
 from db.users import get_user_info
-import logging
 
 
 class DMChatManager:
@@ -33,8 +32,9 @@ class DMChatManager:
     def get_chats(self, user: str):
         return get_chats(user)
 
-    async def register_message(self, user: str, target: str, name: str, message: str) -> bool:
-        
+    async def register_message(
+        self, user: str, target: str, name: str, message: str
+    ) -> bool:
         chat = self.get_chat(user, target)
         if chat is None:
             return False
@@ -74,5 +74,7 @@ class DMChatManager:
 
             while True:
                 data = await socket.receive_text()
-                await self.register_message(user, target, get_user_info(user)["name"], data)
+                await self.register_message(
+                    user, target, get_user_info(user)["name"], data
+                )
         return None

@@ -87,7 +87,7 @@ async def chat_user(target: str, token: str = Depends(JWTBearer())) -> None:
 
 
 @app.get("/chats/user/", tags=["chat"])
-async def chat_user( token: str = Depends(JWTBearer())) -> None:
+async def chat_user(token: str = Depends(JWTBearer())) -> None:
     user = get_user_id(token)
     return DMChatManager().get_chats(user)
 
@@ -104,9 +104,7 @@ async def chat_user_msg(
 
 
 @app.websocket("/ws/chat/user/{target}")
-async def chat_user_ws(
-    websocket: WebSocket, target: str, token: str
-):
+async def chat_user_ws(websocket: WebSocket, target: str, token: str):
     if get_user_info(target) is not None:
         await DMChatManager().register_socket(websocket, get_user_id(token), target)
     return None
