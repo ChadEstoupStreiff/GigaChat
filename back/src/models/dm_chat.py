@@ -1,7 +1,7 @@
 import json
 from datetime import datetime
 
-from db.chats import create_chat, create_message, get_chat, get_messages
+from db.chats import create_chat, create_message, get_chat, get_chats, get_messages
 from db.users import get_user_info
 
 
@@ -28,6 +28,9 @@ class DMChatManager:
         if chat["messages"] is None:
             chat["messages"] = []
         return chat
+
+    def get_chats(self, user: str):
+        return get_chats(user)
 
     def register_message(self, user: str, target: str, name: str, message: str) -> bool:
         chat = self.get_chat(user, target)

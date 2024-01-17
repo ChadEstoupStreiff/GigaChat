@@ -86,6 +86,12 @@ async def chat_user(target: str, token: str = Depends(JWTBearer())) -> None:
     return None
 
 
+@app.get("/chats/user/", tags=["chat"])
+async def chat_user( token: str = Depends(JWTBearer())) -> None:
+    user = get_user_id(token)
+    return DMChatManager().get_chats(user)
+
+
 @app.post("/chat/user/{target}", tags=["chat"])
 async def chat_user_msg(
     target: str, message, token: str = Depends(JWTBearer())
@@ -97,7 +103,7 @@ async def chat_user_msg(
     return None
 
 
-@app.websocket("/chat/user/{target}")
+@app.websocket("/chat/user/ws/{target}")
 async def chat_user_ws(
     websocket: WebSocket, target: str, token: str = Depends(JWTBearer())
 ):

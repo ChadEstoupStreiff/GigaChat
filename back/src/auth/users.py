@@ -51,7 +51,7 @@ def register_user(user_mail: str, user_password: str, user_name: str) -> str:
 def check_user(user_mail: str, user_password: str) -> bool:
     user_encrypted_password = get_user_password(user_mail)
     return user_encrypted_password is not None and bcrypt.checkpw(
-        user_password.encode(), bytes(user_encrypted_password.encode("ASCII", "utf8"))
+        user_password.encode(), bytes(user_encrypted_password)
     )
 
 

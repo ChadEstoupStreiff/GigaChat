@@ -28,6 +28,14 @@ def get_chat(userA: str, userB: str) -> Union[List, None]:
     )
 
 
+def get_chats(user: str) -> Union[List, None]:
+    return DB().execute(
+        """SELECT chat_id, userA, userB FROM Chats WHERE userA=%s OR userB=%s""",
+        (user, user),
+        keys=("chat_id", "userA", "userB"),
+    )
+
+
 def create_message(chat_id: str, name: str, message: str, date: str):
     data = DB().commit(
         """INSERT INTO ChatMessages
