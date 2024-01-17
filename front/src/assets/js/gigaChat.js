@@ -1,13 +1,13 @@
-let selected_conv = null;
+let selected_conv = null
 
 
 document.getElementById('profile-btn').addEventListener('click', function () {
     checkTokenAndRedirect();
     window.location.href = 'profile.html';
-});
+})
 
-const writting_input = document.getElementById('writting_space_input');
-const writting_button = document.getElementById('writting_space_button');
+const writting_input = document.getElementById('writting_space_input')
+const writting_button = document.getElementById('writting_space_button')
 
 writting_button.addEventListener('click', (event) => {
     const text = writting_input.value;
