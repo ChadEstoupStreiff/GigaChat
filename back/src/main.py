@@ -99,13 +99,13 @@ async def chat_user_msg(
     if get_user_info(target) is not None:
         user = get_user_id(token)
         name = get_user_info(user)["name"]
-        return DMChatManager().register_message(user, target, name, message)
+        return await DMChatManager().register_message(user, target, name, message)
     return None
 
 
-@app.websocket("/chat/user/ws/{target}")
+@app.websocket("/ws/chat/user/{target}")
 async def chat_user_ws(
-    websocket: WebSocket, target: str, token: str = Depends(JWTBearer())
+    websocket: WebSocket, target: str, token: str
 ):
     if get_user_info(target) is not None:
         await DMChatManager().register_socket(websocket, get_user_id(token), target)

@@ -153,7 +153,7 @@ window.onload = function () {
                 //     console.log("Message from server ", event.data);
                 // });
 
-                var ws = new WebSocket('ws://localhost:4568/chats/user/ws/'+selected_conv);
+                var ws = new WebSocket('ws://127.0.0.1:4568/ws/chat/user/'+selected_conv + '?token=' + localStorage.getItem('token'));
                 ws.onmessage = function(event) {
                     console.log("Message from server ", event.data);
                 };
