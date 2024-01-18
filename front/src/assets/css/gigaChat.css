@@ -2,9 +2,14 @@ body {
     background-size: cover;
     transition: background-image 0.5s;
     background-color: #ccc;
+    width: 100vw;
+    height: 100vh;
 }
 
-/* CSS pour le conteneur principal */
+header {
+    height: 10vh;
+}
+
 .container {
     /*background-color: #f5f5f5d8;
     border-radius: 10px;
@@ -12,7 +17,13 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     max-width: 600px;
     margin: 30px auto;*/
+    height: auto;
     display: flex;
+    height: 90vh;
+}
+
+#new_chat_receiver_space{
+    display: none;
 }
 
 #conv_list_space {
@@ -20,68 +31,16 @@ body {
     flex-direction: column;
 }
 
-/* Styling pour les parties "Données" et "Vêtements" */
-.data-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1px solid #ccc;
-    padding-bottom: 10px;
-    margin-bottom: 20px;
+#right_space {
+    background-color: white;
+    width: 80vw;
+    display: none;
 }
 
-.clothes-list {
-    padding-top: 20px;
+new_chat_receiver_space{
+    display: none;
 }
 
-/* Style pour les titres des parties "Données" et "Vêtements" */
-.data-row h2,
-.clothes-list h2 {
-    font-size: 18px;
-    font-weight: bold;
-}
-
-/* Style pour les listes de vêtements */
-.clothes-list ul {
-    list-style-type: none;
-    padding-left: 0;
-}
-
-.clothes-list li {
-    margin-bottom: 5px;
-}
-
-/* CSS pour le calendrier des jours */
-.calendar {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.buttons-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.calendar button {
-    width: 100px;
-    height: 100px;
-    margin: 10px;
-    border: none;
-    background-color: #f0f0f0;
-    color: #333;
-    font-size: 16px;
-    cursor: pointer;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.2s ease-in-out;
-}
-
-.calendar button:hover {
-    background-color: #ddd;
-}
-
-#resultDate {
-    text-align: center;
-    text-transform: capitalize;
+#left_space {
+    width: 20vw;
 }
