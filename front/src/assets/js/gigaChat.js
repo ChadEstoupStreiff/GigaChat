@@ -262,10 +262,13 @@ function onclick_on_conv_name(selected_conv) {
             }
 
             messages.forEach(msg => {
+                const message_div = document.createElement("div");
+                message_div.className = "chat_message";
                 const listItem = document.createElement("p"); // Utilisez des boutons au lieu de list items
                 listItem.textContent = msg.message;
                 listItem.setAttribute("name", msg.name);
-                chat_list.appendChild(listItem);
+                message_div.appendChild(listItem);
+                chat_list.appendChild(message_div);
             })
 
         })
