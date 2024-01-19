@@ -49,13 +49,17 @@ function signupUser(userData) {
             'accept': 'application/json'
         }
     })
-        .then(response => {
-            if (response.ok) {
-                return response.json(); // Parse and return the response data if successful
-            } else {
-                throw new Error('Error during signup: ' + response.status);
-            }
-        });
+    .then(response => {
+        if (response.ok) {
+            return response.json(); // Parse and return the response data if successful
+        } else {
+            alert("Bad informations (probably mail)")
+        }
+    })
+    .catch(error => {
+        console.error('Unexpected error:', error);
+    });
+    
 }
 
 function disconnectUser() {
