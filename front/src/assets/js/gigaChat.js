@@ -180,7 +180,6 @@ function request_conv() {
 function onclick_on_conv_name(selected_conv) {
     remove_display_none_right_space();
     set_display_none_new_receiver_space();
-    css_style();
     new_chat_mode = false;
 
     if (ws != null) {
@@ -257,6 +256,13 @@ function onclick_on_conv_name(selected_conv) {
         .catch(error => {
             console.log("error : " + error);
         });
+    
+    // Supposons que "chatListSpace" est l'ID de ta div
+    var chatListSpace = document.getElementById('chat_list_space');
+
+    // Fait défiler la div vers le bas
+    chatListSpace.scrollTop = chatListSpace.scrollHeight;
+
 }
 
 function remove_display_none_right_space() {
@@ -273,8 +279,4 @@ function set_display_none_new_receiver_space() {
 
 function reconnect_token_expire() {
     window.location.href = window.location.origin + '/login.html';
-}
-
-function css_style(){
-    //margin-left: auto;
 }
