@@ -14,7 +14,6 @@ class Shield:
             Shield.__instance = super(Shield, cls).__new__(cls, *args, **kwargs)
 
             Shield.__instance.user_login_cooldown = {}
-            Shield.__instance.captcha_tokens = {}
 
         return Shield.__instance
 
@@ -29,7 +28,7 @@ class Shield:
         if user in self.user_login_cooldown.keys():
             del self.user_login_cooldown[user]
 
-    async def verify_captcha(self, user: str, response) -> str:
+    async def verify_captcha(self, response) -> str:
         secret_key = dotenv_values("/.env")["CAPTCHA_SECRET"]
         recaptcha_server_url = "https://www.google.com/recaptcha/api/siteverify"
         data = {"secret": secret_key, "response": response}
@@ -37,13 +36,3 @@ class Shield:
             response = await client.post(recaptcha_server_url, data=data)
             result = response.json()
             return result.get("success")
-
-    def verify_captcha_token(self, user: str, token: str):
-        if (
-            user in self.captcha_tokens.keys()
-            and self.captcha_tokens[user][0] == token
-            and self.verify_captcha_token <= time.time() + 60
-        ):
-            del self.captcha_tokens[user]
-            return True
-        return False

@@ -53,7 +53,7 @@ writting_button.addEventListener('click', (event) => {
     if (copiedText.trim() == "") return; //Ne peut pas envoyer de messages vides
 
     //API Envoie le message à un utilisateur
-    const apiUrlSendMsg = 'http://localhost:4568/chat/user/' + destinary + '?message=' + copiedText;
+    const apiUrlSendMsg = 'https://gigachatapi.chades.fr/chat/user/' + destinary + '?message=' + copiedText;
     const headersSendMsg = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -90,7 +90,7 @@ document.addEventListener("keypress", function (event) {
 window.onload = function () {
 
     // API CONNEXION
-    const apiUrl1 = 'http://localhost:4568/user';
+    const apiUrl1 = 'https://gigachatapi.chades.fr/user';
     const headers1 = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -123,7 +123,7 @@ window.onload = function () {
 
 function request_conv() {
     // API récupération des conversations 
-    const apiUrl = 'http://localhost:4568/chats/user';
+    const apiUrl = 'https://gigachatapi.chades.fr/chats/user/';
     const headers = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -188,7 +188,7 @@ function onclick_on_conv_name(selected_conv) {
     if (ws != null) {
         ws.close();
     }
-    ws = new WebSocket('ws://127.0.0.1:4568/ws/chat/user/' + selected_conv + '?token=' + localStorage.getItem('token'));
+    ws = new WebSocket(getAPIWs() + '/ws/chat/user/' + selected_conv + '?token=' + localStorage.getItem('token'));
     ws.onmessage = function (event) {
         data = JSON.parse(event.data)
         let lItem = document.createElement("p");
@@ -200,7 +200,7 @@ function onclick_on_conv_name(selected_conv) {
 
 
     // API CONNEXION
-    const apiUrl2 = 'http://localhost:4568/chat/user/' + selected_conv;
+    const apiUrl2 = 'https://gigachatapi.chades.fr/chat/user/' + selected_conv;
     const headers2 = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`,

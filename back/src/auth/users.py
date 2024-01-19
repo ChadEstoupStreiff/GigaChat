@@ -31,20 +31,14 @@ def is_mail(mail: str) -> bool:
     return False
 
 
-def register_user(user_mail: str, user_password: str, user_name: str) -> str:
-    user_password = encrypt(user_password)
+def register_user(user_mail: str, user_password: str, user_name: str, user_confirm_password: str) -> str:
     if is_mail(user_mail):
-        try:
+        if is_password_confirmed(user_password, user_confirm_password):
+            user_password = encrypt(user_password)
             if create_user(user_mail, user_password, user_name):
                 return get_token(user_mail)
-        except Exception as e:
-            import logging
-
-            logging.critical(e)
-            raise HTTPException(
-                400,
-                detail=f"{user_mail} can't be registered. Can already be in use by another user.",
-            )
+        else:
+            raise HTTPException(400, detail="The password and confirmation are different")
     else:
         raise HTTPException(400, detail=f"{user_mail} is not a mail")
 
@@ -65,3 +59,10 @@ def get_user_login_info(token: str) -> Dict[str, str]:
 
 def get_user_id(token: str) -> str:
     return get_user_login_info(token)["user_id"]
+
+
+def is_password_confirmed(password: str, confirm_password: str) -> bool:
+    isConfirmed = False
+    if password == confirm_password:
+        isConfirmed = True
+    return isConfirmed
