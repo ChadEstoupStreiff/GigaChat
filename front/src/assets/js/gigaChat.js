@@ -1,96 +1,102 @@
 let selected_conv = null;
 var ws = null;
-const writting_input = document.getElementById('writting_space_input')
-const writting_button = document.getElementById('writting_space_button')
-const new_chat_receiver_input = document.getElementById('new_chat_receiver_input')
+let writting_input = null;
+let writting_button = null;
+let new_chat_receiver_input = null;
+let conv_list = null;
 var new_chat_mode = null;
-const conv_list = document.getElementById("conv_list_space");
 let my_name = "";
 let my_mail = "";
 
-document.getElementById('profile-btn').addEventListener('click', function () {
-    checkTokenAndRedirect();
-    window.location.href = 'profile.html';
-})
-
-
-document.getElementById('add_user_button').addEventListener('click', (event) => {
-    remove_display_none_right_space();
-    remove_display_none_new_receiver_space();
-    new_chat_mode = true;
-
-    const chat_list = document.getElementById("chat_list_space");
-    try {
-        const childElements = chat_list.children;
-
-        for (let i = childElements.length - 1; i >= 0; i--) {
-            chat_list.removeChild(childElements[i]);
-        }
-    } catch (error) {
-        console.log("error : ");
-        console.log(error);
-    }
-});
-
-
-
-writting_button.addEventListener('click', (event) => {
-    const text = writting_input.value;
-    const copiedText = text;
-    writting_input.value = '';
-    var destinary = "";
-    
-    if (new_chat_mode) {
-        destinary = new_chat_receiver_input.value;
-        new_chat_receiver_input.value = "";
-    } else {
-        destinary = selected_conv;
-    }        
-    selected_conv = destinary;
-    console.log(new_chat_mode)
-    console.log(destinary)
-
-    if (copiedText.trim() == "") return; //Ne peut pas envoyer de messages vides
-
-    //API Envoie le message à un utilisateur
-    const apiUrlSendMsg = 'https://gigachatapi.chades.fr/chat/user/' + destinary + '?message=' + copiedText;
-    const headersSendMsg = {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`,
-    };
-    const requestOptionsSendMsg = {
-        method: 'POST',
-        headers: headersSendMsg,
-    };
-    fetch(apiUrlSendMsg, requestOptionsSendMsg)
-        .then(response => {
-            if (response.status==401) {
-                reconnect_token_expire();
-            }
-            else if (!response.ok) {
-                throw new Error('ERROR when request to api');
-            }
-            return response.json(); // Renvoie les données de la réponse sous forme de JSON
-        })
-        .catch(error => {
-            console.error('Erreur:', error);
-        });
-
-    request_conv();
-
-    onclick_on_conv_name(destinary);
-});
-
-document.addEventListener("keypress", function (event) {
-    if (event.key === "Enter") {
-        writting_button.click();
-    }
-});
 
 window.onload = function () {
 
+    
+    writting_input = document.getElementById('writting_space_input');
+    writting_button = document.getElementById('writting_space_button');
+    new_chat_receiver_input = document.getElementById('new_chat_receiver_input');
+    conv_list = document.getElementById("conv_list_space");
+
+    document.getElementById('profile-btn').addEventListener('click', (event) => {
+        checkTokenAndRedirect();
+        window.location.href = 'profile.html';
+    });
+    
+    
+    document.getElementById('add_user_button').addEventListener('click', (event) => {
+        remove_display_none_right_space();
+        remove_display_none_new_receiver_space();
+        new_chat_mode = true;
+    
+        const chat_list = document.getElementById("chat_list_space");
+        try {
+            const childElements = chat_list.children;
+    
+            for (let i = childElements.length - 1; i >= 0; i--) {
+                chat_list.removeChild(childElements[i]);
+            }
+        } catch (error) {
+            console.log("error : ");
+            console.log(error);
+        }
+    });
+    
+    
+    
+    writting_button.addEventListener('click', (event) => {
+        const text = writting_input.value;
+        const copiedText = text;
+        writting_input.value = '';
+        var destinary = "";
+        
+        if (new_chat_mode) {
+            destinary = new_chat_receiver_input.value;
+            new_chat_receiver_input.value = "";
+        } else {
+            destinary = selected_conv;
+        }        
+        selected_conv = destinary;
+    
+        if (copiedText.trim() == "") return; //Ne peut pas envoyer de messages vides
+    
+        //API Envoie le message à un utilisateur
+        const apiUrlSendMsg = getAPIUrl()+'/chat/user/' + destinary + '?message=' + copiedText;
+        const headersSendMsg = {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        };
+        const requestOptionsSendMsg = {
+            method: 'POST',
+            headers: headersSendMsg,
+        };
+        fetch(apiUrlSendMsg, requestOptionsSendMsg)
+            .then(response => {
+                if (response.status==401) {
+                    reconnect_token_expire();
+                }
+                else if (!response.ok) {
+                    throw new Error('ERROR when request to api');
+                }
+                return response.json(); // Renvoie les données de la réponse sous forme de JSON
+            })
+            .catch(error => {
+                console.error('Erreur:', error);
+            });
+    
+        request_conv();
+    
+        onclick_on_conv_name(destinary);
+    });
+    
+    document.addEventListener("keypress", function (event) {
+        if (event.key === "Enter") {
+            writting_button.click();
+        }
+    });
+
+    /////////////////////////////////////////////////////////////////////////////////////////////
     // API CONNEXION
-    const apiUrl1 = 'https://gigachatapi.chades.fr/user';
+    const apiUrl1 = getAPIUrl()+'/user';
     const headers1 = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -123,7 +129,7 @@ window.onload = function () {
 
 function request_conv() {
     // API récupération des conversations 
-    const apiUrl = 'https://gigachatapi.chades.fr/chats/user/';
+    const apiUrl = getAPIUrl()+'/chats/user/';
     const headers = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -200,7 +206,7 @@ function onclick_on_conv_name(selected_conv) {
 
 
     // API CONNEXION
-    const apiUrl2 = 'https://gigachatapi.chades.fr/chat/user/' + selected_conv;
+    const apiUrl2 = getAPIUrl()+'/chat/user/' + selected_conv;
     const headers2 = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
