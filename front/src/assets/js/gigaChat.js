@@ -39,35 +39,30 @@ writting_button.addEventListener('click', (event) => {
     const text = writting_input.value;
     const copiedText = text;
     writting_input.value = '';
-
     var destinary = "";
+
     if (new_chat_mode) {
         destinary = new_chat_receiver_input.value
     } else {
         destinary = selected_conv;
     }
+
+    //API Envoie le message à un utilisateur
     const apiUrlSendMsg = 'http://localhost:4568/chat/user/' + destinary + '?message=' + copiedText;
     const headersSendMsg = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
     };
-
-    // Requête
     const requestOptionsSendMsg = {
         method: 'POST',
         headers: headersSendMsg,
     };
-
-    // Appel de l'API en utilisant fetch
     fetch(apiUrlSendMsg, requestOptionsSendMsg)
         .then(response => {
-            if (!response.ok) {
-                throw new Error('ERROR when request to api');
-            }
-            return response.json(); // Renvoie les données de la réponse sous forme de JSON
+            if (!response.ok) throw new Error('ERROR when request to api');
+            return response.json();
         })
         .catch(error => {
-            // Gestion des erreurs
             console.error('Erreur:', error);
         });
 
@@ -75,8 +70,6 @@ writting_button.addEventListener('click', (event) => {
 
     onclick_on_conv_name(destinary);
 });
-
-
 
 window.onload = function () {
 
@@ -86,75 +79,55 @@ window.onload = function () {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
     };
-
-    // Requête
     const requestOptions1 = {
         method: 'GET',
         headers: headers1,
     };
-
-    // Appel de l'API en utilisant fetch
     fetch(apiUrl1, requestOptions1)
         .then(response => {
             if (!response.ok) {
                 throw new Error('ERROR when request to api');
             }
-            return response.json(); // Renvoie les données de la réponse sous forme de JSON
+            return response.json();
         })
         .then(data => {
             my_name = data["name"];
             my_mail = data["mail"];
         })
         .catch(error => {
-            // Gestion des erreurs
             console.error('Erreur:', error);
         });
 
-
     request_conv();
-
 
 }
 
-
-
 function request_conv() {
-
-    const conv_list = document.getElementById("conv_list_space");
-    try {
-        const childElements = conv_list.children;
-
-        for (let i = childElements.length - 1; i >= 0; i--) {
-            conv_list.removeChild(childElements[i]);
-        }
-    } catch (error) {
-        console.log("error : ");
-        console.log(error);
-    }
-
-    // API CONNEXION
+    // API récupération des conversations 
     const apiUrl = 'http://localhost:4568/chats/user';
     const headers = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
     };
-
-    // Requête
     const requestOptions = {
         method: 'GET',
         headers: headers,
     };
-
-    // Appel de l'API en utilisant fetch
     fetch(apiUrl, requestOptions)
         .then(response => {
             if (!response.ok) {
                 throw new Error('ERROR when request to api');
             }
-            return response.json(); // Renvoie les données de la réponse sous forme de JSON
+            return response.json();
         })
         .then(data => {
+            const conv_btns = conv_list.children;
             let user_list = [];
+            let user_list_btn = [];
+
+            for (const conv of conv_btns) {
+                user_list_btn.push(conv.getAttribute("user_mail"));
+            }
 
             data.forEach(chat => {
                 if (my_mail == chat.userA) {
@@ -163,17 +136,17 @@ function request_conv() {
                 else {
                     user_list.push(chat.userA);
                 }
-
             });
 
             user_list.forEach(user => {
-                const listItem = document.createElement("button");
-                listItem.textContent = user;
-                listItem.setAttribute("user_mail", user);
-                conv_list.appendChild(listItem);
+                if (!user_list_btn.includes(user)) {
+                    const listItem = document.createElement("button");
+                    listItem.textContent = user;
+                    listItem.setAttribute("user_mail", user);
+                    conv_list.appendChild(listItem);
+                }
             })
 
-            // Gestionnaire d'événements pour les éléments de la liste du calendrier
             conv_list.addEventListener("click", function (event) {
                 selected_conv = event.target.getAttribute("user_mail");
                 onclick_on_conv_name(selected_conv);
@@ -181,12 +154,9 @@ function request_conv() {
             });
         })
         .catch(error => {
-            // Gestion des erreurs
             console.error('Erreur:', error);
         });
 }
-
-
 
 function onclick_on_conv_name(selected_conv) {
     remove_display_none_right_space();
@@ -213,14 +183,10 @@ function onclick_on_conv_name(selected_conv) {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
     };
-
-    // Requête
     const requestOptions2 = {
         method: 'GET',
         headers: headers2,
     };
-
-    // Appel de l'API en utilisant fetch
     fetch(apiUrl2, requestOptions2)
         .then(response => {
             if (!response.ok) {
@@ -241,8 +207,7 @@ function onclick_on_conv_name(selected_conv) {
                     chat_list.removeChild(childElements[i]);
                 }
             } catch (error) {
-                console.log("error : ");
-                console.log(error);
+                console.log("error : " + error);
             }
 
             messages.forEach(msg => {
@@ -257,25 +222,18 @@ function onclick_on_conv_name(selected_conv) {
 
         })
         .catch(error => {
-            // Gestion des erreurs
-            console.log("error : ");
-            console.log(error);
+            console.log("error : " + error);
         });
 }
-
-
 
 function remove_display_none_right_space() {
     document.getElementById("right_space").style.display = "block";
 }
 
-
 function remove_display_none_new_receiver_space() {
     document.getElementById("new_chat_receiver_space").style.display = "block";
 }
 
-
 function set_display_none_new_receiver_space() {
     document.getElementById("new_chat_receiver_space").style.display = "none";
 }
-
