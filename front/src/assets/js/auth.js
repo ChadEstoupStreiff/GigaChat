@@ -36,6 +36,7 @@ function loginUser(userData) {
 
 function signupUser(userData) {
     // Convert the user data object into a query string
+    console.log(userData)
     const queryString = Object.entries(userData)
         .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
         .join('&');

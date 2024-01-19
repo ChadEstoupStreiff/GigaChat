@@ -1,4 +1,5 @@
 import logging
+import os
 import time
 from typing import Any, List, Tuple, Union
 
@@ -72,7 +73,7 @@ class DB:
             for values in cursor:
                 obj = {}
                 for i, val in enumerate(values):
-                    obj[keys[i]] = val
+                    obj[keys[i]] = str(val)
                 tab.append(obj)
         else:
             tab = [[value for value in values] for values in cursor]

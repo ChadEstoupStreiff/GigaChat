@@ -28,14 +28,14 @@ app.add_middleware(
 
 # AUTH
 @app.get("/auth", tags=["auth"])
-async def endpoint_user_login_info(
+async def endpoint_auth_info(
     token: str = Depends(JWTBearer()),
 ) -> Union[Dict[str, Any], None]:
     return get_user_login_info(token)
 
 
 @app.post("/auth", tags=["auth"])
-async def endpoint_user_login(user_mail: str, user_password: str) -> Union[str, None]:
+async def endpoint_auth_login(user_mail: str, user_password: str) -> Union[str, None]:
     Shield().shield_login(user_mail)
     if check_user(user_mail, user_password):
         Shield().success_login(user_mail)
@@ -56,8 +56,8 @@ async def endpoint_user_login_info(
 @app.post("/user", tags=["user"])
 async def endpoint_create_user(
     user_mail: str, user_password: str, user_name: str, recaptcha_response: str
-):
-    if Shield().verify_captcha(user_mail, recaptcha_response):
+) -> str:
+    if await Shield().verify_captcha(user_mail, recaptcha_response):
         return register_user(user_mail, user_password, user_name)
     raise HTTPException(403, "Invalid captcha")
 
@@ -91,7 +91,7 @@ async def chat_user(target: str, token: str = Depends(JWTBearer())) -> None:
 
 
 @app.get("/chats/user/", tags=["chat"])
-async def chat_user(token: str = Depends(JWTBearer())) -> None:
+async def chats_user(token: str = Depends(JWTBearer())) -> None:
     user = get_user_id(token)
     return DMChatManager().get_chats(user)
 
