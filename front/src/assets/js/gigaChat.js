@@ -39,13 +39,16 @@ writting_button.addEventListener('click', (event) => {
     const copiedText = text;
     writting_input.value = '';
     var destinary = "";
-
+    
     if (new_chat_mode) {
         destinary = new_chat_receiver_input.value;
         new_chat_receiver_input.value = "";
     } else {
         destinary = selected_conv;
-    }
+    }        
+    selected_conv = destinary;
+    console.log(new_chat_mode)
+    console.log(destinary)
 
     if (copiedText.trim() == "") return; //Ne peut pas envoyer de messages vides
 
@@ -244,25 +247,23 @@ function onclick_on_conv_name(selected_conv) {
                 const listItem = document.createElement("p");
                 
                 listItem.textContent = msg.message;
-                if(msg.name == my_name){
-                    listItem.setAttribute("class", "me");
-                }else{
+                if(msg.name != my_name){
                     listItem.setAttribute("class", "you");
+                }else{
+                    listItem.setAttribute("class", "me");
                 }
                 chat_list.appendChild(listItem);
             })
+
+            var chatListSpace = document.getElementById('chat_list_space');
+
+            // Fait défiler la div vers le bas
+            chatListSpace.scrollTop = chatListSpace.scrollHeight;
 
         })
         .catch(error => {
             console.log("error : " + error);
         });
-    
-    // Supposons que "chatListSpace" est l'ID de ta div
-    var chatListSpace = document.getElementById('chat_list_space');
-
-    // Fait défiler la div vers le bas
-    chatListSpace.scrollTop = chatListSpace.scrollHeight;
-
 }
 
 function remove_display_none_right_space() {
