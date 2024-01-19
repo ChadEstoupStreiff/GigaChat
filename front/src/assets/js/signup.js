@@ -22,4 +22,5 @@ signupForm.addEventListener('submit', function (event) {
             // Handle any errors that occurred during signup
             console.error('Signup error: ' + error);
         });
+    grecaptcha.reset();
 });
