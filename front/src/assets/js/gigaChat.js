@@ -47,6 +47,8 @@ writting_button.addEventListener('click', (event) => {
         destinary = selected_conv;
     }
 
+    if (copiedText.trim() == "") return; //Ne peut pas envoyer de messages vides
+
     //API Envoie le message à un utilisateur
     const apiUrlSendMsg = 'http://localhost:4568/chat/user/' + destinary + '?message=' + copiedText;
     const headersSendMsg = {
@@ -74,6 +76,12 @@ writting_button.addEventListener('click', (event) => {
     request_conv();
 
     onclick_on_conv_name(destinary);
+});
+
+document.addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+        writting_button.click();
+    }
 });
 
 window.onload = function () {
