@@ -59,8 +59,13 @@ writting_button.addEventListener('click', (event) => {
     };
     fetch(apiUrlSendMsg, requestOptionsSendMsg)
         .then(response => {
-            if (!response.ok) throw new Error('ERROR when request to api');
-            return response.json();
+            if (response.status==401) {
+                reconnect_token_expire();
+            }
+            else if (!response.ok) {
+                throw new Error('ERROR when request to api');
+            }
+            return response.json(); // Renvoie les données de la réponse sous forme de JSON
         })
         .catch(error => {
             console.error('Erreur:', error);
@@ -85,7 +90,10 @@ window.onload = function () {
     };
     fetch(apiUrl1, requestOptions1)
         .then(response => {
-            if (!response.ok) {
+            if (response.status==401) {
+                reconnect_token_expire();
+            }
+            else if (!response.ok) {
                 throw new Error('ERROR when request to api');
             }
             return response.json();
@@ -115,7 +123,10 @@ function request_conv() {
     };
     fetch(apiUrl, requestOptions)
         .then(response => {
-            if (!response.ok) {
+            if (response.status==401) {
+                reconnect_token_expire();
+            }
+            else if (!response.ok) {
                 throw new Error('ERROR when request to api');
             }
             return response.json();
@@ -154,7 +165,11 @@ function request_conv() {
             });
         })
         .catch(error => {
-            console.error('Erreur:', error);
+            if (error.status === 401) {
+                console.error('Not Logged In');
+            } else {
+                console.error('Unexpected error:', error);
+            }
         });
 }
 
@@ -189,7 +204,10 @@ function onclick_on_conv_name(selected_conv) {
     };
     fetch(apiUrl2, requestOptions2)
         .then(response => {
-            if (!response.ok) {
+            if (response.status==401) {
+                reconnect_token_expire();
+            }
+            else if (!response.ok) {
                 throw new Error('ERROR when request to api');
             }
             return response.json(); // Renvoie les données de la réponse sous forme de JSON
@@ -236,4 +254,8 @@ function remove_display_none_new_receiver_space() {
 
 function set_display_none_new_receiver_space() {
     document.getElementById("new_chat_receiver_space").style.display = "none";
+}
+
+function reconnect_token_expire() {
+    window.location.href = window.location.origin + '/login.html';
 }
