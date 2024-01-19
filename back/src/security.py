@@ -36,6 +36,7 @@ class Shield:
         async with httpx.AsyncClient() as client:
             response = await client.post(recaptcha_server_url, data=data)
             result = response.json()
+            print(result.get("success"))
             return result.get("success")
 
     def verify_captcha_token(self, user: str, token: str):
