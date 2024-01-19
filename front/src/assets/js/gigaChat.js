@@ -61,7 +61,10 @@ writting_button.addEventListener('click', (event) => {
     // Appel de l'API en utilisant fetch
     fetch(apiUrlSendMsg, requestOptionsSendMsg)
         .then(response => {
-            if (!response.ok) {
+            if (response.status==401) {
+                reconnect_token_expire();
+            }
+            else if (!response.ok) {
                 throw new Error('ERROR when request to api');
             }
             return response.json(); // Renvoie les données de la réponse sous forme de JSON
@@ -96,7 +99,10 @@ window.onload = function () {
     // Appel de l'API en utilisant fetch
     fetch(apiUrl1, requestOptions1)
         .then(response => {
-            if (!response.ok) {
+            if (response.status==401) {
+                reconnect_token_expire();
+            }
+            else if (!response.ok) {
                 throw new Error('ERROR when request to api');
             }
             return response.json(); // Renvoie les données de la réponse sous forme de JSON
@@ -145,10 +151,14 @@ function request_conv() {
         headers: headers,
     };
 
+
     // Appel de l'API en utilisant fetch
     fetch(apiUrl, requestOptions)
         .then(response => {
-            if (!response.ok) {
+            if (response.status==401) {
+                reconnect_token_expire();
+            }
+            else if (!response.ok) {
                 throw new Error('ERROR when request to api');
             }
             return response.json(); // Renvoie les données de la réponse sous forme de JSON
@@ -181,8 +191,11 @@ function request_conv() {
             });
         })
         .catch(error => {
-            // Gestion des erreurs
-            console.error('Erreur:', error);
+            if (error.status === 401) {
+                console.error('Not Logged In');
+            } else {
+                console.error('Unexpected error:', error);
+            }
         });
 }
 
@@ -223,7 +236,10 @@ function onclick_on_conv_name(selected_conv) {
     // Appel de l'API en utilisant fetch
     fetch(apiUrl2, requestOptions2)
         .then(response => {
-            if (!response.ok) {
+            if (response.status==401) {
+                reconnect_token_expire();
+            }
+            else if (!response.ok) {
                 throw new Error('ERROR when request to api');
             }
             return response.json(); // Renvoie les données de la réponse sous forme de JSON
@@ -276,3 +292,6 @@ function set_display_none_new_receiver_space() {
     document.getElementById("new_chat_receiver_space").style.display = "none";
 }
 
+function reconnect_token_expire() {
+    window.location.href = window.location.origin + '/login.html';
+}
