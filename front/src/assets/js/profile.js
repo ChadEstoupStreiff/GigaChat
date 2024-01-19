@@ -14,7 +14,7 @@ function fetchUserData() {
     checkTokenAndRedirect();
     const accessToken = localStorage.getItem('token');
 
-    return fetch('https://gigachatapi.chades.fr/user', {
+    return fetch(getAPIUrl() + '/user', {
         method: 'GET',
         headers: {
             'accept': 'application/json',

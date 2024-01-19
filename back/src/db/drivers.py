@@ -5,6 +5,7 @@ from typing import Any, List, Tuple, Union
 
 import mysql.connector
 from dotenv import dotenv_values
+from fastapi import HTTPException
 
 
 class DB:
@@ -34,6 +35,7 @@ class DB:
             if DB.__instance.conn is None:
                 logging.critical("Can't connect to DB")
                 exit(1)
+            logging.info("Connected to DB")
         return DB.__instance
 
     def reload_driver(self):
@@ -58,9 +60,14 @@ class DB:
         return self.conn.cursor(prepared=True)
 
     def commit(self, cursor=None):
-        if cursor is not None:
-            cursor.close()
-        self.conn.commit()
+        try:
+            if cursor is not None:
+                cursor.close()
+            self.conn.commit()
+
+        except Exception as e:
+            logging.critical(f"Bad request: {e}")
+            raise HTTPException(400)
 
     def execute(
         self, request: str, values: List[str] = (), keys: List[str] = None
