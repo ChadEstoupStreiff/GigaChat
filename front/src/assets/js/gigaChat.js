@@ -198,7 +198,14 @@ function onclick_on_conv_name(selected_conv) {
         if (data.name==destinary) {
             let lItem = document.createElement("p");
             lItem.textContent = data.msg;
-            lItem.setAttribute("name", data.name);
+
+            if(data.name != my_name && data.name != undefined){
+                lItem.setAttribute("class", "you");
+            } else {
+                lItem.setAttribute("class", "me");
+            }
+
+            //lItem.setAttribute("name", data.name);
             let c_list = document.getElementById("chat_list_space");
             c_list.appendChild(lItem);
             var chatListSpace = document.getElementById('chat_list_space');
