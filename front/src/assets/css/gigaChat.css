@@ -7,7 +7,7 @@ body {
 }
 
 header {
-    height: 10vh;
+    height: 8vh;
     margin: 0;
     padding: 0;
 }
@@ -36,7 +36,7 @@ header {
 #right_space {
     background-color: white;
     height: 90vh;
-    width: 80vw;
+    width: 50vw;
     display: none;
 }
 
@@ -44,20 +44,52 @@ header {
     height: 90vh;
     width: 20vw;
     overflow: scroll;
+    margin-right: 5px;
+    overflow-x: hidden;
 
+
+}
+
+#chat_writting_space{
+    width: 90%;
+    margin: auto;
+}
+
+#writting_space_input{
+    width: 80%;
+}
+#writting_space_button{
+    width: auto;
 }
 
 #chat_list_space {
     height: 80vh;
     overflow: scroll;
+    font-size:100%;
+    background-image:linear-gradient(top left,#333,black);
+    background-attachment:fixed;
+    overflow-x: hidden;
 }
 
-.chat_message {
-    margin: 20px 50px 20px 10px;
+#chat_list_space p {
+    margin: 20px 20px 20px 10px;
     padding: 5px 20px;
-    border-radius: 20px;
+    border-radius: 15px;
 
     background-color: rgba(240, 240, 240, 1);
-
     width: fit-content;
+    
+    font-size: 15px;
+    font-family:'Montserrat', sans-serif;
+    color:#515151;
+    max-width: 350px;
+}
+
+#chat_list_space .me{
+    background-color: #e3effd ;
+    margin-left: auto;
+}
+
+#chat_list_space .you{
+    background-color: #f6f6f6;
 }
