@@ -222,7 +222,6 @@ function onclick_on_conv_name(selected_conv) {
             messages = data["messages"];
 
             const chat_list = document.getElementById("chat_list_space");
-            console.log(chat_list);
             try {
                 const childElements = chat_list.children;
 
@@ -277,6 +276,5 @@ function reconnect_token_expire() {
 }
 
 function css_style(){
-    console.log(my_name)
     //margin-left: auto;
 }
