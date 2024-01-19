@@ -3,11 +3,13 @@ body {
     transition: background-image 0.5s;
     background-color: #ccc;
     width: 100vw;
-    height: 100vh;
+    height: 95vh;
 }
 
 header {
     height: 10vh;
+    margin: 0;
+    padding: 0;
 }
 
 .container {
@@ -33,14 +35,29 @@ header {
 
 #right_space {
     background-color: white;
+    height: 90vh;
     width: 80vw;
     display: none;
 }
 
-new_chat_receiver_space{
-    display: none;
+#left_space {
+    height: 90vh;
+    width: 20vw;
+    overflow: scroll;
+
 }
 
-#left_space {
-    width: 20vw;
+#chat_list_space {
+    height: 80vh;
+    overflow: scroll;
+}
+
+.chat_message {
+    margin: 20px 50px 20px 10px;
+    padding: 5px 20px;
+    border-radius: 20px;
+
+    background-color: rgba(240, 240, 240, 1);
+
+    width: fit-content;
 }
