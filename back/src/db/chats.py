@@ -7,7 +7,7 @@ from fastapi import HTTPException
 def create_chat(userA: str, userB: str) -> bool:
     users = [userA, userB]
     users.sort()
-    data = DB().commit(
+    data = DB().execute(
         """INSERT INTO Chats
 (userA, userB)
 VALUES (%s,%s)""",
@@ -37,7 +37,7 @@ def get_chats(user: str) -> Union[List, None]:
 
 
 def create_message(chat_id: str, name: str, message: str, date: str):
-    data = DB().commit(
+    data = DB().execute(
         """INSERT INTO ChatMessages
 (chat_id, name, message, date)
 VALUES (%s,%s, %s, %s)""",

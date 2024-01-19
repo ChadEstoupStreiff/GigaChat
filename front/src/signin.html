@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Page d'inscription</title>
     <link rel="stylesheet" href="assets/css/style.css">
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </head>
 
 <body>
@@ -22,6 +23,8 @@
 
         <label for="confirm-password">Confirmer le mot de passe:</label>
         <input type="password" id="confirm-password" name="confirm-password" required>
+
+        <div class="g-recaptcha" data-sitekey="6Lcc2VUpAAAAAIuxhrNU14WN-90CbcLFoJ0CINYP"></div>
 
         <button type="submit">S'inscrire</button>
     </form>

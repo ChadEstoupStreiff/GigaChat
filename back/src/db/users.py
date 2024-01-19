@@ -49,14 +49,14 @@ SET user_mail=%s WHERE user_mail=%s""",
 
 
 def create_user(user_mail: str, user_password: bytes, user_name: str) -> bool:
-    data = DB().commit(
+    data = DB().execute(
         """INSERT INTO Users
 (user_mail, user_password, user_name)
 VALUES (%s,%s,%s)""",
         (user_mail, user_password, user_name),
     )
     if data is not None:
-        return data
+        return True
     raise HTTPException(400, "Invalid variables")
 
 

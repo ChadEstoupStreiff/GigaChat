@@ -8,3 +8,4 @@ PyJWT==2.6.0
 mysql-connector-python==8.0.29
 bcrypt
 websockets
+httpx

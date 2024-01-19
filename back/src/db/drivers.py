@@ -1,4 +1,5 @@
 import logging
+import os
 import time
 from typing import Any, List, Tuple, Union
 
@@ -35,42 +36,50 @@ class DB:
                 exit(1)
         return DB.__instance
 
-    def _get_cursor(self):
-        if self.conn is not None:
-            return self.conn.cursor(prepared=True)
-        return None
+    def reload_driver(self):
+        logging.error("Creating new connection")
+        self.conn = mysql.connector.connect(
+            host="licence_database",
+            user="root",
+            passwd=os.getenv("SQL_ROOTPASSWORD"),
+            database=os.getenv("SQL_DATABASE"),
+        )
+        self.last_conn = time.time()
 
-    def commit(self, query: str, values: Tuple = None) -> bool:
-        if values is None:
-            values = ()
-        cursor = self._get_cursor()
-        cursor.execute(query, values)
-        affected = cursor.rowcount
+    def check_connection(self):
+        try:
+            self.conn.cursor(prepared=True)
+        except Exception as e:
+            logging.error(f"Error with connection: {e}")
+            self.reload_driver()
+
+    def get_cursor(self):
+        self.check_connection()
+        return self.conn.cursor(prepared=True)
+
+    def commit(self, cursor=None):
         if cursor is not None:
             cursor.close()
         self.conn.commit()
-        return affected > 0
 
     def execute(
-        self, query: str, values: Tuple = None, keys: Tuple = None
-    ) -> Union[List[List[Any]], None]:
-        if values is None:
-            values = ()
-        cursor = self._get_cursor()
-        cursor.execute(query, values)
+        self, request: str, values: List[str] = (), keys: List[str] = None
+    ) -> List[List[str]]:
+        cursor = self.get_cursor()
+        cursor.execute(request, values)
 
-        data = [[val for val in values] for values in cursor]
-        if keys is not None and len(data) > 0:
-            data_dict = []
-            for data_row in data:
-                data_dict_row = {}
-                for i, key in enumerate(keys):
-                    data_dict_row[key] = data_row[i]
-                data_dict.append(data_dict_row)
-            data = data_dict
-        if cursor is not None:
-            cursor.close()
-        return data
+        if keys is not None:
+            tab = []
+            for values in cursor:
+                obj = {}
+                for i, val in enumerate(values):
+                    obj[keys[i]] = str(val)
+                tab.append(obj)
+        else:
+            tab = [[value for value in values] for values in cursor]
+
+        self.commit(cursor)
+        return tab
 
     def execute_single(
         self, query: str, values: Tuple = None, keys: Tuple = None
