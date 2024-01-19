@@ -195,13 +195,15 @@ function onclick_on_conv_name(selected_conv) {
     ws = new WebSocket(getAPIWs() + '/ws/chat/user/' + selected_conv + '?token=' + localStorage.getItem('token'));
     ws.onmessage = function (event) {
         data = JSON.parse(event.data)
-        let lItem = document.createElement("p");
-        lItem.textContent = data.msg;
-        lItem.setAttribute("name", data.name);
-        let c_list = document.getElementById("chat_list_space");
-        c_list.appendChild(lItem);
-        var chatListSpace = document.getElementById('chat_list_space');
-        chatListSpace.scrollTop = chatListSpace.scrollHeight;
+        if (data.name==destinary) {
+            let lItem = document.createElement("p");
+            lItem.textContent = data.msg;
+            lItem.setAttribute("name", data.name);
+            let c_list = document.getElementById("chat_list_space");
+            c_list.appendChild(lItem);
+            var chatListSpace = document.getElementById('chat_list_space');
+            chatListSpace.scrollTop = chatListSpace.scrollHeight;
+        }
     };
 
 
