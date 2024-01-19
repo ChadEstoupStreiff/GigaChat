@@ -15,7 +15,7 @@ function loginUser(userData) {
         .join('&');
 
     // Make an API request to send the user's information
-    const apiUrl = `https://gigachatapi.chades.fr/auth?${queryString}`;
+    const apiUrl = `http://localhost:4568/auth?${queryString}`;
 
     return fetch(apiUrl, {
         method: 'POST',
@@ -42,7 +42,7 @@ function signupUser(userData) {
         .join('&');
 
     // Make an API request to send the user's information
-    const apiUrl = `https://gigachatapi.chades.fr/user?${queryString}`;
+    const apiUrl = `http://localhost:4568/user?${queryString}`;
 
     return fetch(apiUrl, {
         method: 'POST',

@@ -50,7 +50,7 @@ writting_button.addEventListener('click', (event) => {
     if (copiedText.trim() == "") return; //Ne peut pas envoyer de messages vides
 
     //API Envoie le message à un utilisateur
-    const apiUrlSendMsg = 'https://gigachatapi.chades.fr/chat/user/' + destinary + '?message=' + copiedText;
+    const apiUrlSendMsg = 'http://localhost:4568/chat/user/' + destinary + '?message=' + copiedText;
     const headersSendMsg = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -87,7 +87,7 @@ document.addEventListener("keypress", function (event) {
 window.onload = function () {
 
     // API CONNEXION
-    const apiUrl1 = 'https://gigachatapi.chades.fr/user';
+    const apiUrl1 = 'http://localhost:4568/user';
     const headers1 = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -120,7 +120,7 @@ window.onload = function () {
 
 function request_conv() {
     // API récupération des conversations 
-    const apiUrl = 'https://gigachatapi.chades.fr/chats/user/';
+    const apiUrl = 'http://localhost:4568/chats/user/';
     const headers = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -197,7 +197,7 @@ function onclick_on_conv_name(selected_conv) {
 
 
     // API CONNEXION
-    const apiUrl2 = 'https://gigachatapi.chades.fr/chat/user/' + selected_conv;
+    const apiUrl2 = 'http://localhost:4568/chat/user/' + selected_conv;
     const headers2 = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
