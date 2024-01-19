@@ -16,6 +16,7 @@ window.onload = function () {
     writting_button = document.getElementById('writting_space_button');
     new_chat_receiver_input = document.getElementById('new_chat_receiver_input');
     conv_list = document.getElementById("conv_list_space");
+    
 
     document.getElementById('profile-btn').addEventListener('click', (event) => {
         checkTokenAndRedirect();
@@ -27,7 +28,7 @@ window.onload = function () {
         remove_display_none_right_space();
         remove_display_none_new_receiver_space();
         new_chat_mode = true;
-    
+        document.getElementById('chat_title_h2').innerText = '';
         const chat_list = document.getElementById("chat_list_space");
         try {
             const childElements = chat_list.children;
@@ -56,7 +57,9 @@ window.onload = function () {
             destinary = selected_conv;
         }        
         selected_conv = destinary;
-    
+        document.getElementById('chat_title_h2').innerText = selected_conv;
+        
+        
         if (copiedText.trim() == "") return; //Ne peut pas envoyer de messages vides
     
         //API Envoie le message à un utilisateur
@@ -65,7 +68,7 @@ window.onload = function () {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
         };
-        const requestOptionsSendMsg = {
+        const requestOptionsSendMsg = { 
             method: 'POST',
             headers: headersSendMsg,
         };
@@ -124,7 +127,6 @@ window.onload = function () {
         });
 
     request_conv();
-
 }
 
 function request_conv() {
@@ -177,6 +179,7 @@ function request_conv() {
 
             conv_list.addEventListener("click", function (event) {
                 selected_conv = event.target.getAttribute("user_mail");
+                document.getElementById('chat_title_h2').innerText = selected_conv;
                 onclick_on_conv_name(selected_conv);
 
             });
@@ -202,6 +205,8 @@ function onclick_on_conv_name(selected_conv) {
         lItem.setAttribute("name", data.name);
         let c_list = document.getElementById("chat_list_space");
         c_list.appendChild(lItem);
+        var chatListSpace = document.getElementById('chat_list_space');
+        chatListSpace.scrollTop = chatListSpace.scrollHeight;
     };
 
 
@@ -253,7 +258,7 @@ function onclick_on_conv_name(selected_conv) {
                 const listItem = document.createElement("p");
                 
                 listItem.textContent = msg.message;
-                if(msg.name != my_name){
+                if(msg.name != my_name && msg.name != undefined){
                     listItem.setAttribute("class", "you");
                 }else{
                     listItem.setAttribute("class", "me");
@@ -262,8 +267,6 @@ function onclick_on_conv_name(selected_conv) {
             })
 
             var chatListSpace = document.getElementById('chat_list_space');
-
-            // Fait défiler la div vers le bas
             chatListSpace.scrollTop = chatListSpace.scrollHeight;
 
         })
