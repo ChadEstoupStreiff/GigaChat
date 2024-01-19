@@ -54,8 +54,12 @@ async def endpoint_user_login_info(
 
 
 @app.post("/user", tags=["user"])
-async def endpoint_create_user(user_mail: str, user_password: str, user_name: str):
-    return register_user(user_mail, user_password, user_name)
+async def endpoint_create_user(
+    user_mail: str, user_password: str, user_name: str, recaptcha_response: str
+):
+    if Shield().verify_captcha(user_mail, recaptcha_response):
+        return register_user(user_mail, user_password, user_name)
+    raise HTTPException(403, "Invalid captcha")
 
 
 @app.put("/user", tags=["user"])
