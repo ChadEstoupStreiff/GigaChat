@@ -18,7 +18,6 @@ document.getElementById('add_user_button').addEventListener('click', (event) => 
     remove_display_none_right_space();
     remove_display_none_new_receiver_space();
     new_chat_mode = true;
-    console.log(new_chat_receiver_input.value);
 
     const chat_list = document.getElementById("chat_list_space");
     try {
@@ -42,10 +41,13 @@ writting_button.addEventListener('click', (event) => {
     var destinary = "";
 
     if (new_chat_mode) {
-        destinary = new_chat_receiver_input.value
+        destinary = new_chat_receiver_input.value;
+        new_chat_receiver_input.value = "";
     } else {
         destinary = selected_conv;
     }
+
+    if (copiedText.trim() == "") return; //Ne peut pas envoyer de messages vides
 
     //API Envoie le message à un utilisateur
     const apiUrlSendMsg = 'http://localhost:4568/chat/user/' + destinary + '?message=' + copiedText;
@@ -74,6 +76,12 @@ writting_button.addEventListener('click', (event) => {
     request_conv();
 
     onclick_on_conv_name(destinary);
+});
+
+document.addEventListener("keypress", function (event) {
+    if (event.key === "Enter") {
+        writting_button.click();
+    }
 });
 
 window.onload = function () {
@@ -165,11 +173,7 @@ function request_conv() {
             });
         })
         .catch(error => {
-            if (error.status === 401) {
-                console.error('Not Logged In');
-            } else {
-                console.error('Unexpected error:', error);
-            }
+            console.error('Unexpected error:', error);
         });
 }
 
