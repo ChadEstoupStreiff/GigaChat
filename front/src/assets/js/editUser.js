@@ -4,7 +4,7 @@ let password;
 
 window.onload = function () {
     // API CONNEXION
-    const apiUrl = 'http://localhost:4568/user';
+    const apiUrl = 'https://gigachatapi.chades.fr/user';
     const headers = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -73,7 +73,7 @@ function editUser(userData) {
         .join('&');
 
     // Make an API request to send the user's information
-    const apiUrl = `http://localhost:4568/user?${queryString}`; //  http://localhost:4568/clothes?old_name=casquette&old_color=red&old_c_type=HAT&old_c_heat=HOT&old_rain=NORAIN&new_name=casquetteV2&new_color=blue&new_c_type=HAT&new_c_heat=HOT&new_rain=NORAIN
+    const apiUrl = `https://gigachatapi.chades.fr/user?${queryString}`; //  http://localhost:4568/clothes?old_name=casquette&old_color=red&old_c_type=HAT&old_c_heat=HOT&old_rain=NORAIN&new_name=casquetteV2&new_color=blue&new_c_type=HAT&new_c_heat=HOT&new_rain=NORAIN
 
     const headers = {
         'Content-Type': 'application/json',
