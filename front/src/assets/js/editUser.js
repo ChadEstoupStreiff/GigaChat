@@ -27,12 +27,10 @@ window.onload = function () {
         .then(data => {
             get_name = data["name"];
             mail = data["mail"];
-            
+
             document.getElementById('name').value = get_name;
         })
         .catch(error => {
-            // Gestion des erreurs
-            console.error('Erreur:', error);
         });
 }
 
@@ -54,14 +52,12 @@ edit_user_form.addEventListener('submit', function (event) {
     }
 
     editUser(userData)
-    .then(responseData => {
-        // Redirect to the login page after successful signup
-        window.location.href = 'index.html'; // Replace 'login.html' with the actual login page URL
-    })
-    .catch(error => {
-        // Handle any errors that occurred during signup
-        console.error('Signup error: ' + error);
-    });
+        .then(responseData => {
+            // Redirect to the login page after successful signup
+            window.location.href = 'index.html'; // Replace 'login.html' with the actual login page URL
+        })
+        .catch(error => {
+        });
 });
 
 
@@ -92,6 +88,6 @@ function editUser(userData) {
         });
 }
 
-document.getElementById("cancelButton").addEventListener("click", function() {
+document.getElementById("cancelButton").addEventListener("click", function () {
     history.back(); // Retourne sur la page précédente
 });

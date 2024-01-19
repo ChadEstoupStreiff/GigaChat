@@ -36,7 +36,6 @@ function loginUser(userData) {
 
 function signupUser(userData) {
     // Convert the user data object into a query string
-    console.log(userData)
     const queryString = Object.entries(userData)
         .map(([key, value]) => `${encodeURIComponent(key)}=${encodeURIComponent(value)}`)
         .join('&');
@@ -50,17 +49,16 @@ function signupUser(userData) {
             'accept': 'application/json'
         }
     })
-    .then(response => {
-        if (response.ok) {
-            return response.json(); // Parse and return the response data if successful
-        } else {
-            alert("Bad informations (probably mail)")
-        }
-    })
-    .catch(error => {
-        console.error('Unexpected error:', error);
-    });
-    
+        .then(response => {
+            if (response.ok) {
+                return response.json(); // Parse and return the response data if successful
+            } else {
+                alert("Bad informations (probably mail)")
+            }
+        })
+        .catch(error => {
+        });
+
 }
 
 function disconnectUser() {

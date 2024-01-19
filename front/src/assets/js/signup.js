@@ -19,7 +19,6 @@ signupForm.addEventListener('submit', function (event) {
                 window.location.href = 'login.html'; // Replace 'login.html' with the actual login page URL
         })
         .catch(error => {
-            // Handle any errors that occurred during signup
-            console.error('Signup error: ' + error);
         });
+    grecaptcha.reset();
 });

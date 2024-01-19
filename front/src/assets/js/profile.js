@@ -32,6 +32,5 @@ function fetchUserData() {
             document.getElementById('user-email').textContent = data.mail;
         })
         .catch(error => {
-            console.error('Fetch error:', error);
         });
 }
