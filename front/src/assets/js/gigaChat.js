@@ -18,7 +18,6 @@ document.getElementById('add_user_button').addEventListener('click', (event) => 
     remove_display_none_right_space();
     remove_display_none_new_receiver_space();
     new_chat_mode = true;
-    console.log(new_chat_receiver_input.value);
 
     const chat_list = document.getElementById("chat_list_space");
     try {
@@ -42,7 +41,8 @@ writting_button.addEventListener('click', (event) => {
     var destinary = "";
 
     if (new_chat_mode) {
-        destinary = new_chat_receiver_input.value
+        destinary = new_chat_receiver_input.value;
+        new_chat_receiver_input.value = "";
     } else {
         destinary = selected_conv;
     }
@@ -173,17 +173,14 @@ function request_conv() {
             });
         })
         .catch(error => {
-            if (error.status === 401) {
-                console.error('Not Logged In');
-            } else {
-                console.error('Unexpected error:', error);
-            }
+            console.error('Unexpected error:', error);
         });
 }
 
 function onclick_on_conv_name(selected_conv) {
     remove_display_none_right_space();
     set_display_none_new_receiver_space();
+    css_style();
     new_chat_mode = false;
 
     if (ws != null) {
@@ -237,6 +234,7 @@ function onclick_on_conv_name(selected_conv) {
             }
 
             messages.forEach(msg => {
+                /*
                 const message_div = document.createElement("div");
                 message_div.className = "chat_message";
                 const listItem = document.createElement("p"); // Utilisez des boutons au lieu de list items
@@ -244,6 +242,16 @@ function onclick_on_conv_name(selected_conv) {
                 listItem.setAttribute("name", msg.name);
                 message_div.appendChild(listItem);
                 chat_list.appendChild(message_div);
+                */
+                const listItem = document.createElement("p");
+                
+                listItem.textContent = msg.message;
+                if(msg.name == my_name){
+                    listItem.setAttribute("class", "me");
+                }else{
+                    listItem.setAttribute("class", "you");
+                }
+                chat_list.appendChild(listItem);
             })
 
         })
@@ -266,4 +274,9 @@ function set_display_none_new_receiver_space() {
 
 function reconnect_token_expire() {
     window.location.href = window.location.origin + '/login.html';
+}
+
+function css_style(){
+    console.log(my_name)
+    //margin-left: auto;
 }
