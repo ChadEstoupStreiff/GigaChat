@@ -14,7 +14,7 @@ function fetchUserData() {
     checkTokenAndRedirect();
     const accessToken = localStorage.getItem('token');
 
-    return fetch('http://localhost:4568/user', {
+    return fetch(getAPIUrl() + '/user', {
         method: 'GET',
         headers: {
             'accept': 'application/json',
