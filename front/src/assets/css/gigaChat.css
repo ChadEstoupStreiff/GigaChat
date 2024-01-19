@@ -50,12 +50,25 @@ header {
 
 }
 
+#chat_writting_space{
+    width: 90%;
+    margin: auto;
+}
+
+#writting_space_input{
+    width: 80%;
+}
+#writting_space_button{
+    width: auto;
+}
+
 #chat_list_space {
     height: 80vh;
     overflow: scroll;
     font-size:100%;
     background-image:linear-gradient(top left,#333,black);
     background-attachment:fixed;
+    overflow-x: hidden;
 }
 
 #chat_list_space p {
