@@ -11,7 +11,7 @@ let my_mail = "";
 
 window.onload = function () {
 
-    
+
     writting_input = document.getElementById('writting_space_input');
     writting_button = document.getElementById('writting_space_button');
     new_chat_receiver_input = document.getElementById('new_chat_receiver_input');
@@ -21,46 +21,44 @@ window.onload = function () {
         checkTokenAndRedirect();
         window.location.href = 'profile.html';
     });
-    
-    
+
+
     document.getElementById('add_user_button').addEventListener('click', (event) => {
         remove_display_none_right_space();
         remove_display_none_new_receiver_space();
         new_chat_mode = true;
-    
+
         const chat_list = document.getElementById("chat_list_space");
         try {
             const childElements = chat_list.children;
-    
+
             for (let i = childElements.length - 1; i >= 0; i--) {
                 chat_list.removeChild(childElements[i]);
             }
         } catch (error) {
-            console.log("error : ");
-            console.log(error);
         }
     });
-    
-    
-    
+
+
+
     writting_button.addEventListener('click', (event) => {
         const text = writting_input.value;
         const copiedText = text;
         writting_input.value = '';
         var destinary = "";
-        
+
         if (new_chat_mode) {
             destinary = new_chat_receiver_input.value;
             new_chat_receiver_input.value = "";
         } else {
             destinary = selected_conv;
-        }        
+        }
         selected_conv = destinary;
-    
+
         if (copiedText.trim() == "") return; //Ne peut pas envoyer de messages vides
-    
+
         //API Envoie le message à un utilisateur
-        const apiUrlSendMsg = getAPIUrl()+'/chat/user/' + destinary + '?message=' + copiedText;
+        const apiUrlSendMsg = getAPIUrl() + '/chat/user/' + destinary + '?message=' + copiedText;
         const headersSendMsg = {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -71,7 +69,7 @@ window.onload = function () {
         };
         fetch(apiUrlSendMsg, requestOptionsSendMsg)
             .then(response => {
-                if (response.status==401) {
+                if (response.status == 401) {
                     reconnect_token_expire();
                 }
                 else if (!response.ok) {
@@ -80,14 +78,13 @@ window.onload = function () {
                 return response.json(); // Renvoie les données de la réponse sous forme de JSON
             })
             .catch(error => {
-                console.error('Erreur:', error);
             });
-    
+
         request_conv();
-    
+
         onclick_on_conv_name(destinary);
     });
-    
+
     document.addEventListener("keypress", function (event) {
         if (event.key === "Enter") {
             writting_button.click();
@@ -96,7 +93,7 @@ window.onload = function () {
 
     /////////////////////////////////////////////////////////////////////////////////////////////
     // API CONNEXION
-    const apiUrl1 = getAPIUrl()+'/user';
+    const apiUrl1 = getAPIUrl() + '/user';
     const headers1 = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -107,7 +104,7 @@ window.onload = function () {
     };
     fetch(apiUrl1, requestOptions1)
         .then(response => {
-            if (response.status==401) {
+            if (response.status == 401) {
                 reconnect_token_expire();
             }
             else if (!response.ok) {
@@ -120,7 +117,6 @@ window.onload = function () {
             my_mail = data["mail"];
         })
         .catch(error => {
-            console.error('Erreur:', error);
         });
 
     request_conv();
@@ -129,7 +125,7 @@ window.onload = function () {
 
 function request_conv() {
     // API récupération des conversations 
-    const apiUrl = getAPIUrl()+'/chats/user/';
+    const apiUrl = getAPIUrl() + '/chats/user/';
     const headers = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -140,7 +136,7 @@ function request_conv() {
     };
     fetch(apiUrl, requestOptions)
         .then(response => {
-            if (response.status==401) {
+            if (response.status == 401) {
                 reconnect_token_expire();
             }
             else if (!response.ok) {
@@ -182,7 +178,6 @@ function request_conv() {
             });
         })
         .catch(error => {
-            console.error('Unexpected error:', error);
         });
 }
 
@@ -206,7 +201,7 @@ function onclick_on_conv_name(selected_conv) {
 
 
     // API CONNEXION
-    const apiUrl2 = getAPIUrl()+'/chat/user/' + selected_conv;
+    const apiUrl2 = getAPIUrl() + '/chat/user/' + selected_conv;
     const headers2 = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -217,7 +212,7 @@ function onclick_on_conv_name(selected_conv) {
     };
     fetch(apiUrl2, requestOptions2)
         .then(response => {
-            if (response.status==401) {
+            if (response.status == 401) {
                 reconnect_token_expire();
             }
             else if (!response.ok) {
@@ -226,7 +221,6 @@ function onclick_on_conv_name(selected_conv) {
             return response.json(); // Renvoie les données de la réponse sous forme de JSON
         })
         .then(data => {
-            // console.log(data);
             messages = data["messages"];
 
             const chat_list = document.getElementById("chat_list_space");
@@ -237,7 +231,6 @@ function onclick_on_conv_name(selected_conv) {
                     chat_list.removeChild(childElements[i]);
                 }
             } catch (error) {
-                console.log("error : " + error);
             }
 
             messages.forEach(msg => {
@@ -251,11 +244,11 @@ function onclick_on_conv_name(selected_conv) {
                 chat_list.appendChild(message_div);
                 */
                 const listItem = document.createElement("p");
-                
+
                 listItem.textContent = msg.message;
-                if(msg.name != my_name){
+                if (msg.name != my_name) {
                     listItem.setAttribute("class", "you");
-                }else{
+                } else {
                     listItem.setAttribute("class", "me");
                 }
                 chat_list.appendChild(listItem);
@@ -268,7 +261,6 @@ function onclick_on_conv_name(selected_conv) {
 
         })
         .catch(error => {
-            console.log("error : " + error);
         });
 }
 
